@@ -1,0 +1,38 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="row">
+    <h1 class="text-center">新增餐廳</h1>
+    <div class="col-md-6 offset-md-3">
+        <form action="/restaurants" method="POST" novalidate class="needs-validation">
+            <div class="mb-3">
+            <label class="form-label" for="title">店名</label>
+            <input class="form-control" type="text" id="title" name="restaurant[title]" required>
+            </div>
+            <div class="mb-3">
+            <label class="form-label" for="address">地址</label>
+            <input class="form-control" type="text" id="address" name="restaurant[address]" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="phone">電話</label>
+                <input class="form-control" type="text" id="phone" name="restaurant[phone]" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="time">營業時間</label>
+                <input class="form-control" type="text" id="time" name="restaurant[time]" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="image">圖片url</label>
+                <input class="form-control" type="text" id="image" name="restaurant[image]" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="source">圖片來源</label>
+                <input class="form-control" type="text" id="source" name="restaurant[source]" required>
+            </div>
+            <div class="mb-3">
+            <button class="btn btn-success">新增</button>
+            </div>
+        </form>
+        <a class="btn btn-secondary" href="/restaurants">返回</a>
+    </div>
+</div>
+

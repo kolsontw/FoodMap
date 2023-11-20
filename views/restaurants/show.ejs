@@ -1,0 +1,87 @@
+<% layout('layouts/boilerplate') %>
+<link rel="stylesheet" href="/stylesheets/stars.css">
+
+<div class="row mb-5">
+    <div class="col-md-6 offset-md-3">
+        <div class="card">
+            <img src="<%= restaurant.image %>" class="card-img-top" alt="...">
+            <small>
+                <p class="card-text text-center text-secondary">Source: <%= restaurant.source %></p>
+            </small>
+            <div class="card-body">
+                <h3 class="card-title mb-3"><%= restaurant.title %></h3>
+                <p class="card-text text-seconaday">地址：<%= restaurant.address %></p>
+                <div id='map'></div>
+                <p class="card-text mt-3">電話：<%= restaurant.phone %></p>
+                <p class="card-text">營業時間：<%= restaurant.time %></p>
+                <small>
+                <p class="card-text text-secondary">(Submitted by <%= restaurant.author.username %>)</p>
+                </small>
+            </div>
+            <div class="card-body me-2">
+                <% if( currentUser && restaurant.author.equals(currentUser) ){ %>
+                <a class="card-link btn btn-info text-light" href="/restaurants/<%= restaurant._id %>/edit">編輯</a>
+                <form class="d-inline" action="/restaurants/<%= restaurant._id %>?_method=DELETE" method="POST">
+                    <button class="card-link btn btn-danger">刪除</button>
+                </form>
+                <% } %>
+                <a class="card-link btn btn-secondary" href="/restaurants">返回餐廳列表</a>
+            </div>
+            
+            <div class="card-body">
+                <h3 class="mb-3">評論區</h3>
+                <ul class="list-group list-group-flush">
+                <% for(let review of restaurant.reviews){ %>
+                    <li class="list-group-item mb-3">
+                        <p class="starability-result" data-rating="<%=review.rating%>">
+                            Rated: <%= review.rating %> stars
+                        </p>
+                        <p><%= review.body %></p>
+                        <small>
+                            <p class="card-subtitle text-secondary">(By <%= review.author.username %>)</p>
+                        </small>
+                        <% if( currentUser && review.author.equals(currentUser) ){ %>
+                        <form action="/restaurants/<%= restaurant._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                            <button class="btn btn-sm btn-danger mb-3 mt-3">刪除</button>
+                        </form>
+                        <% } %>
+                    </li>
+                <% } %>
+                </ul>
+            </div>
+            
+            <% if(currentUser){ %>
+            <div class="card-body">
+                <h3 class="mb-3">我要留言</h3>
+                <form action="/restaurants/<%= restaurant._id %>/reviews/" method="POST" novalidate class="needs-validation">
+                    <fieldset class="starability-basic">
+                        <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked
+                            aria-label="No rating." />
+                        <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                        <label for="first-rate1" title="Terrible">1 star</label>
+                        <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                        <label for="first-rate2" title="Not good">2 stars</label>
+                        <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                        <label for="first-rate3" title="Average">3 stars</label>
+                        <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                        <label for="first-rate4" title="Very good">4 stars</label>
+                        <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                        <label for="first-rate5" title="Amazing">5 stars</label>
+                    </fieldset>
+                    <div class="mb-3">
+                        <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3" required></textarea>
+                    </div>
+                    <button class="btn btn-success">送出</button>
+                </form>
+            </div>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+<script>
+    const mapToken = '<%- process.env.MAPBOX_TOKEN %>';
+    const restaurant = <%- JSON.stringify(restaurant) %>;
+</script>
+
+<script src="/javascripts/showPageMap.js"></script>
